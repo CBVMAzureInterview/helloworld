@@ -15,7 +15,7 @@ steps:
     inputs:
       azureSub: ${{ parameters.azureSub }}
       scriptType: bash
-      scriptLocation: inlineScripts
+      scriptLocation: inlineScript
       inlineScript: |
         az acr build --subscription "${{ parameters.azureSub }}"
         --registry "${{ parameters.containerRegId }}" \
