@@ -41,8 +41,8 @@ steps:
         --image "${{ parameters.containerRegId }}/${{ parameters.imageNameTag }}" \
         --dns-name-label ${{ parameters.containerGroupName }} \
         --ports 80 \
-        --registry-username "${{ parameters.registryUsername }}" \
-        --registry-password "${{ parameters.registryPassword }}" \
+        --registry-username "${{ parameters.regusername }}" \
+        --registry-password "${{ parameters.regpass }}" \
         --cpu 1 \
         --memory 1 \
         --os-type Linux \
