@@ -16,14 +16,13 @@ stages:
           vmImage: 'ubuntu-latest'
         steps:
         - checkout: self
-
         - template: build-image.yml
           parameters:
             containerFilePath: Dockerfile
-            containerRegId: interviewregistry.azurecr.io
+            containerRegId: $(MY_REG)
             imageNameTag: bestappever:$(Build.BuildId)
-            azureSub: 8a39e2c2-1260-4cce-816c-2e1ff0f50700
-            connectedServiceNameARM: interview-sc
+            azureSub: $(MY_SUB)
+            connectedServiceNameARM: $(MY_ARM)
 
   - stage: DeployStage
     displayName: DeployStage
@@ -36,14 +35,13 @@ stages:
           vmImage: 'ubuntu-latest'
         steps:
         - checkout: self
-
         - template: deploy-image.yml
           parameters:
-            containerRegId: interviewregistry.azurecr.io
+            containerRegId: $(MY_REG)
             imageNameTag: bestappever:$(Build.BuildId)
-            azureSub: 8a39e2c2-1260-4cce-816c-2e1ff0f50700
-            resourceGroupName: interview-rg
+            azureSub: $(MY_SUB)
+            resourceGroupName: $(MY_RESOURCE)
             containerGroupName: bestcontainerever
-            connectedServiceNameARM: interview-sc
+            connectedServiceNameARM: $(MY_ARM)
             regusername: $(REG_USER)
             regpass: $(REG_PASS)
