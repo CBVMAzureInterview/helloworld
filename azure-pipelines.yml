@@ -11,6 +11,9 @@ jobs:
   steps:
   - checkout: self
 
+  - script: docker login -u $(DOCKER_USERNAME) -p $(DOCKER_PASSWORD) interviewregistry
+    displayName: 'Docker Login'
+
   - script: docker build -t bestappever .
     displayName: 'Build Docker Image'
 
@@ -26,6 +29,9 @@ jobs:
     vmImage: 'ubuntu-latest'
   steps:
   - checkout: self
+
+  - script: docker login -u $(DOCKER_USERNAME) -p $(DOCKER_PASSWORD) interviewregistry
+    displayName: 'Docker Login'
 
   - script: docker pull interviewregistry/bestappever:$(Build.BuildId)
     displayName: 'Pull Docker Image'
