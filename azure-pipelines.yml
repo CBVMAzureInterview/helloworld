@@ -2,6 +2,10 @@ trigger:
   branches:
     exclude:
       - '*'
+      
+variables:
+- group: interview-vg
+
 stages:
   - stage: BuildStage
     displayName: BuildStage
