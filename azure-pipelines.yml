@@ -11,8 +11,13 @@ jobs:
   steps:
   - checkout: self
 
-  - script: bash docker_build.sh $($(DOCKER_USERNAME)) $(DOCKER_PASSWORD) $(Build.BuildId)
-    displayName: 'Docker Build'
+  - template: build_image.yml
+    parameters:
+      containerFilePath: Dockerfile
+      containerRegId: interviewregistry.azurecr.io
+      imageNameTag: bestappever:$(Build.BuildId)
+      azureSub: 8a39e2c2-1260-4cce-816c-2e1ff0f50700
+      
 
 - job: Deploy
   displayName: 'Deploy Docker Image'
@@ -21,5 +26,9 @@ jobs:
   steps:
   - checkout: self
 
-  - script: bash docker_run.sh $(DOCKER_USERNAME) $(DOCKER_PASSWORD) $(Build.BuildId)
-    displayName: 'Docker Run'
+  - template: deploy_image.yml
+    parameters:
+      containerFilePath: Dockerfile
+      containerRegId: interviewregistry.azurecr.io
+      imageNameTag: bestappever:$(Build.BuildId)
+      azureSub: 8a39e2c2-1260-4cce-816c-2e1ff0f50700
