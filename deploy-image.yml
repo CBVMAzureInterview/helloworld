@@ -5,6 +5,8 @@ parameters:
     type: string
   - name: azureSub
     type: string
+  - name: connectedServiceNameARM
+    type: string
   - name: resourceGroupName
     type: string
   - name: containerGroupName
