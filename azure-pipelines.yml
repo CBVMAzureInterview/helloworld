@@ -41,3 +41,5 @@ stages:
             resourceGroupName: interview-rg
             containerGroupName: bestcontainerever
             connectedServiceNameARM: interview-sc
+            regusername: $(REG_USER)
+            regpass: $(REG_PASS)
