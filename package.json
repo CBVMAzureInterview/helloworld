@@ -1,17 +1,15 @@
 {
   "name": "bestappever",
   "version": "1.0.0",
-  "description": "Node.js Application",
-  "main": "src/index.js",
+  "description": "My Best App Ever",
+  "main": "index.js",
   "scripts": {
-    "start": "node src/index.js",
-    "test": "echo \"No tests specified\" && exit 0",
-    "build": "echo \"No build steps specified\" && exit 0"
+    "start": "node index.js"
   },
   "dependencies": {
     "express": "^4.17.1"
   },
   "devDependencies": {
-    // Add any dev dependencies here, if needed
+    "nodemon": "^2.1.2"
   }
 }
