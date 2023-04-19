@@ -15,7 +15,7 @@ steps:
   - task: AzureCLI@2
     displayName: Build image
     inputs:
-      azureSub: ${{ parameters.connectedServiceNameARM }}
+      azureSubscription: ${{ parameters.connectedServiceNameARM }}
       scriptType: bash
       scriptLocation: inlineScript
       inlineScript: |
