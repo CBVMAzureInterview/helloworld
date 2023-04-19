@@ -2,33 +2,39 @@ trigger:
   branches:
     exclude:
       - '*'
+stages:
+  - stage:
+    displayName: BuildStage
+    jobs:
+      - job: Build
+        displayName: 'Build Docker Image'
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+        - checkout: self
 
-jobs:
-- job: Build
-  displayName: 'Build Docker Image'
-  pool:
-    vmImage: 'ubuntu-latest'
-  steps:
-  - checkout: self
+        - template: build-image.yml
+          parameters:
+            containerFilePath: Dockerfile
+            containerRegId: interviewregistry.azurecr.io
+            imageNameTag: bestappever:$(Build.BuildId)
+            azureSub: 8a39e2c2-1260-4cce-816c-2e1ff0f50700
 
-  - template: build-image.yml
-    parameters:
-      containerFilePath: Dockerfile
-      containerRegId: interviewregistry.azurecr.io
-      imageNameTag: bestappever:$(Build.BuildId)
-      azureSub: 8a39e2c2-1260-4cce-816c-2e1ff0f50700
-      
+  - stage: 
+    displayName: DeployStage
+    dependsOn:
+      - BuildStage
+    jobs:
+      - job: Deploy
+        displayName: 'Deploy Docker Image'
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+        - checkout: self
 
-- job: Deploy
-  displayName: 'Deploy Docker Image'
-  pool:
-    vmImage: 'ubuntu-latest'
-  steps:
-  - checkout: self
-
-  - template: deploy-image.yml
-    parameters:
-      containerFilePath: Dockerfile
-      containerRegId: interviewregistry.azurecr.io
-      imageNameTag: bestappever:$(Build.BuildId)
-      azureSub: 8a39e2c2-1260-4cce-816c-2e1ff0f50700
+        - template: deploy-image.yml
+          parameters:
+            containerFilePath: Dockerfile
+            containerRegId: interviewregistry.azurecr.io
+            imageNameTag: bestappever:$(Build.BuildId)
+            azureSub: 8a39e2c2-1260-4cce-816c-2e1ff0f50700
