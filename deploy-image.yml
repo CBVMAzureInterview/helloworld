@@ -11,6 +11,13 @@ parameters:
     type: string
   - name: containerGroupName
     type: string
+  - name: regusername
+    type: string
+  - name: regpass
+    type: string
+  - name: dnsNameLabel
+    type: string
+    default: ${{ parameters.containerGroupName }}
 
 steps:
   - checkout: self
@@ -30,9 +37,17 @@ steps:
         docker pull "${{ parameters.containerRegId }}/${{ parameters.imageNameTag }}"
 
         # Create a new Azure Container Instance group
-        az container create --subscription "${{ parameters.azureSub }}" \
+        az container create \
+        --subscription "${{ parameters.azureSub }}" \
         --resource-group "${{ parameters.resourceGroupName }}" \
         --name "${{ parameters.containerGroupName }}" \
         --image "${{ parameters.containerRegId }}/${{ parameters.imageNameTag }}" \
-        --restart-policy Always \
-        --ports 80
+        --dns-name-label "${{ parameters.dnsNameLabel }}" \
+        --ports 80 \
+        --registry-username "${{ parameters.registryUsername }}" \
+        --registry-password "${{ parameters.registryPassword }}" \
+        --cpu 1 \
+        --memory 1 \
+        --os-type Linux \
+        --ip-address Public \
+        --restart-policy Always
