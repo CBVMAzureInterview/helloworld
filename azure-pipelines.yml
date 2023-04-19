@@ -11,17 +11,8 @@ jobs:
   steps:
   - checkout: self
 
-  - script: echo $(DOCKER_PASSWORD) | docker login -u $(DOCKER_USERNAME) --password-stdin interviewregistry
-    displayName: 'Docker Login'
-
-  - script: docker build -t bestappever .
-    displayName: 'Build Docker Image'
-
-  - script: docker tag bestappever interviewregistry/bestappever:$(Build.BuildId)
-    displayName: 'Tag Docker Image'
-
-  - script: docker push interviewregistry/bestappever:$(Build.BuildId)
-    displayName: 'Push Docker Image'
+  - script: bash docker_build.sh
+    displayName: 'Docker Build'
 
 - job: Deploy
   displayName: 'Deploy Docker Image'
@@ -30,11 +21,5 @@ jobs:
   steps:
   - checkout: self
 
-  - script: echo $(DOCKER_PASSWORD) | docker login -u $(DOCKER_USERNAME) --password-stdin interviewregistry
-    displayName: 'Docker Login'
-
-  - script: docker pull interviewregistry/bestappever:$(Build.BuildId)
-    displayName: 'Pull Docker Image'
-
-  - script: docker run -d -p 3000:3000 interviewregistry/bestappever:$(Build.BuildId)
-    displayName: 'Run Docker Container'
+  - script: bash docker_run.sh
+    displayName: 'Docker Run'
