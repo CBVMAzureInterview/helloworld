@@ -14,7 +14,7 @@ steps:
   - checkout: self
 
   - task: AzureCLI@2
-    displayName: Deploy image
+    displayName: Deploy container
     inputs:
       azureSubscription: ${{ parameters.connectedServiceNameARM }}
       scriptType: bash
