@@ -19,7 +19,7 @@ steps:
       scriptType: bash
       scriptLocation: inlineScript
       inlineScript: |
-        az acr build --subscription "${{ parameters.azureSub }}"
+        az acr build --subscription "${{ parameters.azureSub }}" \
         --registry "${{ parameters.containerRegId }}" \
         --file "${{ parameters.containerFilePath }}" \
         --image "${{ parameters.imageNameTag }}"
