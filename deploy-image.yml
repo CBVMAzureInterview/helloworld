@@ -1,0 +1,14 @@
+---
+parameters:
+  - name: containerFilePath
+    type: string
+  - name: containerRegId
+    type: string
+  - name: imageNameTag
+    type: string
+  - name: azureSub
+    type: string
+    
+ steps:
+   - bash: npm run deploy
+     displayName: deploy
