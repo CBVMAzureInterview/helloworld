@@ -15,9 +15,6 @@ parameters:
     type: string
   - name: regpass
     type: string
-  - name: dnsNameLabel
-    type: string
-    default: ${{ parameters.containerGroupName }}
 
 steps:
   - checkout: self
@@ -42,7 +39,7 @@ steps:
         --resource-group "${{ parameters.resourceGroupName }}" \
         --name "${{ parameters.containerGroupName }}" \
         --image "${{ parameters.containerRegId }}/${{ parameters.imageNameTag }}" \
-        --dns-name-label "${{ parameters.dnsNameLabel }}" \
+        --dns-name-label ${{ parameters.containerGroupName }} \
         --ports 80 \
         --registry-username "${{ parameters.registryUsername }}" \
         --registry-password "${{ parameters.registryPassword }}" \
