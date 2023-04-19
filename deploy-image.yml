@@ -1,16 +1,36 @@
----
 parameters:
-  - name: containerFilePath
-    type: string
   - name: containerRegId
     type: string
   - name: imageNameTag
     type: string
   - name: azureSub
     type: string
-  - name: connectedServiceNameARM
+  - name: resourceGroupName
     type: string
-    
+  - name: containerGroupName
+    type: string
+
 steps:
-  - bash: npm run deploy
-    displayName: deploy
+  - checkout: self
+
+  - task: AzureCLI@2
+    displayName: Deploy image
+    inputs:
+      azureSubscription: ${{ parameters.connectedServiceNameARM }}
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
+        # Login to Azure Container Registry
+        az acr login --subscription "${{ parameters.azureSub }}" \
+        --name "${{ parameters.containerRegId }}"
+
+        # Pull the Docker image from the Container Registry
+        docker pull "${{ parameters.containerRegId }}/${{ parameters.imageNameTag }}"
+
+        # Create a new Azure Container Instance group
+        az container create --subscription "${{ parameters.azureSub }}" \
+        --resource-group "${{ parameters.resourceGroupName }}" \
+        --name "${{ parameters.containerGroupName }}" \
+        --image "${{ parameters.containerRegId }}/${{ parameters.imageNameTag }}" \
+        --restart-policy Always \
+        --ports 80
