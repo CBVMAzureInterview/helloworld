@@ -9,15 +9,15 @@ parameters:
   - name: azureSub
     type: string
     
- steps:
-   - task: AzureCLI@2
-     displayName: Build image
-     inputs:
-       azureSub: ${{ parameters.azureSub }}
-       scriptType: bash
-       scriptLocation: inlineScripts
-       inlineScript: |
-         az acr build --subscription "${{ parameters.azureSub }}"
-         --registry "${{ parameters.containerRegId }}" \
-         --file "${{ parameters.containerFilePath }}" \
-         --image "${{ parameters.imageNameTag }}"
+steps:
+  - task: AzureCLI@2
+    displayName: Build image
+    inputs:
+      azureSub: ${{ parameters.azureSub }}
+      scriptType: bash
+      scriptLocation: inlineScripts
+      inlineScript: |
+        az acr build --subscription "${{ parameters.azureSub }}"
+        --registry "${{ parameters.containerRegId }}" \
+        --file "${{ parameters.containerFilePath }}" \
+        --image "${{ parameters.imageNameTag }}"
