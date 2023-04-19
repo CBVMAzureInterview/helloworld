@@ -8,6 +8,8 @@ parameters:
     type: string
   - name: azureSub
     type: string
+  - name: connectedServiceNameARM
+    type: string
     
 steps:
   - bash: npm run deploy
