@@ -1,0 +1,34 @@
+trigger:
+  branches:
+    exclude:
+      - '*'
+
+jobs:
+- job: Build
+  displayName: 'Build Docker Image'
+  pool:
+    vmImage: 'ubuntu-latest'
+  steps:
+  - checkout: self
+
+  - script: docker build -t bestappever .
+    displayName: 'Build Docker Image'
+
+  - script: docker tag bestappever interviewregistry/bestappever:$(Build.BuildId)
+    displayName: 'Tag Docker Image'
+
+  - script: docker push interviewregistry/bestappever:$(Build.BuildId)
+    displayName: 'Push Docker Image'
+
+- job: Deploy
+  displayName: 'Deploy Docker Image'
+  pool:
+    vmImage: 'ubuntu-latest'
+  steps:
+  - checkout: self
+
+  - script: docker pull interviewregistry/bestappever:$(Build.BuildId)
+    displayName: 'Pull Docker Image'
+
+  - script: docker run -d -p 3000:3000 interviewregistry/bestappever:$(Build.BuildId)
+    displayName: 'Run Docker Container'
