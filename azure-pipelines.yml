@@ -11,7 +11,7 @@ jobs:
   steps:
   - checkout: self
 
-  - script: docker login -u $(DOCKER_USERNAME) -p $(DOCKER_PASSWORD) interviewregistry
+  - script: echo $(DOCKER_PASSWORD) | docker login -u $(DOCKER_USERNAME) --password-stdin interviewregistry
     displayName: 'Docker Login'
 
   - script: docker build -t bestappever .
@@ -30,7 +30,7 @@ jobs:
   steps:
   - checkout: self
 
-  - script: docker login -u $(DOCKER_USERNAME) -p $(DOCKER_PASSWORD) interviewregistry
+  - script: echo $(DOCKER_PASSWORD) | docker login -u $(DOCKER_USERNAME) --password-stdin interviewregistry
     displayName: 'Docker Login'
 
   - script: docker pull interviewregistry/bestappever:$(Build.BuildId)
