@@ -22,4 +22,5 @@ steps:
         az acr build --subscription "${{ parameters.azureSub }}" \
         --registry "${{ parameters.containerRegId }}" \
         --file "${{ parameters.containerFilePath }}" \
-        --image "${{ parameters.imageNameTag }}"
+        --image "${{ parameters.imageNameTag }}" \
+        .
