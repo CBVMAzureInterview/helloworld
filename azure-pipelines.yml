@@ -35,10 +35,8 @@ stages:
 
         - template: deploy-image.yml
           parameters:
-            containerFilePath: Dockerfile
             containerRegId: interviewregistry.azurecr.io
             imageNameTag: bestappever:$(Build.BuildId)
             azureSub: 8a39e2c2-1260-4cce-816c-2e1ff0f50700
-            connectedServiceNameARM: interview-sc
             resourceGroupName: interview-rg
             containerGroupName: bestcontainerever
