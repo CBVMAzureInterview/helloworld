@@ -1,0 +1,47 @@
+trigger:
+  branches:
+    exclude:
+      - '*'
+      
+variables:
+- group: interview-vg
+
+stages:
+  - stage: BuildStage
+    displayName: BuildStage
+    jobs:
+      - job: Build
+        displayName: 'Build Docker Image'
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+        - checkout: self
+        - template: build-image.yml
+          parameters:
+            containerFilePath: Dockerfile
+            containerRegId: $(MY_REG)
+            imageNameTag: bestappever:$(Build.BuildId)
+            azureSub: $(MY_SUB)
+            connectedServiceNameARM: $(MY_ARM)
+
+  - stage: DeployStage
+    displayName: DeployStage
+    dependsOn:
+      - BuildStage
+    jobs:
+      - job: Deploy
+        displayName: 'Deploy Docker Image'
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+        - checkout: self
+        - template: deploy-image.yml
+          parameters:
+            containerRegId: $(MY_REG)
+            imageNameTag: bestappever:$(Build.BuildId)
+            azureSub: $(MY_SUB)
+            resourceGroupName: $(MY_RESOURCE)
+            containerGroupName: bestcontainerever
+            connectedServiceNameARM: $(MY_ARM)
+            regusername: $(REG_USER)
+            regpass: $(REG_PASS)

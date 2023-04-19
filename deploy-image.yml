@@ -1,0 +1,50 @@
+parameters:
+  - name: containerRegId
+    type: string
+  - name: imageNameTag
+    type: string
+  - name: azureSub
+    type: string
+  - name: connectedServiceNameARM
+    type: string
+  - name: resourceGroupName
+    type: string
+  - name: containerGroupName
+    type: string
+  - name: regusername
+    type: string
+  - name: regpass
+    type: string
+
+steps:
+  - checkout: self
+
+  - task: AzureCLI@2
+    displayName: Deploy container
+    inputs:
+      azureSubscription: ${{ parameters.connectedServiceNameARM }}
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
+        # Login to Azure Container Registry
+        az acr login --subscription "${{ parameters.azureSub }}" \
+        --name "${{ parameters.containerRegId }}"
+
+        # Pull the Docker image from the Container Registry
+        docker pull "${{ parameters.containerRegId }}/${{ parameters.imageNameTag }}"
+
+        # Create a new Azure Container Instance group
+        az container create \
+        --subscription "${{ parameters.azureSub }}" \
+        --resource-group "${{ parameters.resourceGroupName }}" \
+        --name "${{ parameters.containerGroupName }}" \
+        --image "${{ parameters.containerRegId }}/${{ parameters.imageNameTag }}" \
+        --dns-name-label ${{ parameters.containerGroupName }} \
+        --ports 80 \
+        --registry-username "${{ parameters.regusername }}" \
+        --registry-password "${{ parameters.regpass }}" \
+        --cpu 1 \
+        --memory 1 \
+        --os-type Linux \
+        --ip-address Public \
+        --restart-policy Always
