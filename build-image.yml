@@ -8,12 +8,14 @@ parameters:
     type: string
   - name: azureSub
     type: string
+  - name: connectedServiceNameARM
+    type: string
     
 steps:
   - task: AzureCLI@2
     displayName: Build image
     inputs:
-      azureSub: ${{ parameters.azureSub }}
+      azureSub: ${{ parameters.connectedServiceNameARM }}
       scriptType: bash
       scriptLocation: inlineScript
       inlineScript: |
