@@ -9,6 +9,6 @@ parameters:
   - name: azureSub
     type: string
     
- steps:
-   - bash: npm run deploy
-     displayName: deploy
+steps:
+  - bash: npm run deploy
+    displayName: deploy
