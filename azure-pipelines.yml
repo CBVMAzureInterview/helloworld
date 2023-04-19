@@ -3,7 +3,7 @@ trigger:
     exclude:
       - '*'
 stages:
-  - stage:
+  - stage: BuildStage
     displayName: BuildStage
     jobs:
       - job: Build
@@ -20,7 +20,7 @@ stages:
             imageNameTag: bestappever:$(Build.BuildId)
             azureSub: 8a39e2c2-1260-4cce-816c-2e1ff0f50700
 
-  - stage: 
+  - stage: DeployStage
     displayName: DeployStage
     dependsOn:
       - BuildStage
